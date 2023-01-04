@@ -1,46 +1,55 @@
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+let mongoose = require("mongoose");
+let Schema = mongoose.Schema;
 
-var SubscriptionSchema = new Schema(
+let SubscriptionSchema = new Schema(
   {
     user_id: {
-      //store the user id
+      //user id
       type: String,
       require: true,
     },
     plan_id: {
-      //store the plan id
+      //plan id
       type: String,
       require: true,
     },
     subscription_name: {
-      //store the subscription name
+      // subscription name
       type: String,
       require: true,
     },
     bool_free_trial: {
       //wether the user is getting this plan through free trial or payment
       type: Boolean,
+      default: false,
     },
     free_trial_end_date: {
       //end date of free trial
       type: Date,
     },
-    subscribe_after_trial: {
-      // does the user subscribe after the free trial ends
-      type: Boolean,
-      default: false,
-    },
-    date_subscribed: {
+    start_date: {
       //date when the user subscribed
       type: Date,
     },
-    date_unsubscribed: {
-      //date when the user unsubscribed
+    end_date: {
+      //date when the user unsubscribed(it can be less than or equal to valid_till)
       type: Date,
     },
-    expiry: {
-      //expiry date of the subscription
+    free_trial_period: {
+      // no of free trial days
+      type: Number,
+    },
+    grace_period: {
+      // free trials days remaining after the trial period is over
+      type: Number,
+    },
+    plan_duration: {
+      // plan duration of the subscription
+      type: Number,
+      require: true,
+    },
+    valid_till: {
+      //scheduled end date of the subscription
       type: Date,
       require: true,
     },
@@ -64,33 +73,30 @@ var SubscriptionSchema = new Schema(
       type: Date,
       require: true,
     },
-    renewal_date: {
-      // date when the subscription was renewed again
-      type: Date,
-      require: true,
+    previous_subscription_id: {
+      // if the user updated the subscription package then the old subscription id will be mapped over here
+      type: String,
+    },
+    money_back_duration: {
+      // money refund back duration
+      type: Number,
     },
     payment_details: {
-      //payment details
       transaction_id: {
         type: String,
-        require: true,
       },
       user_id: {
         type: String,
-        require: true,
       },
       product_id: {
         type: String,
-        require: true,
       },
       amount: {
         type: Number,
-        require: true,
       },
       status: {
         //wether the transaction was successfull or not
         type: String,
-        require: true,
       },
     },
     allowed_limits: {
@@ -98,10 +104,18 @@ var SubscriptionSchema = new Schema(
         type: Number,
         require: true,
       },
-      max_result: {
+      max_results: {
         type: Number,
         require: true,
       },
+    },
+    end_reason: {
+      // reason why the user ended the subscription
+      type: String,
+    },
+    deal_owner: {
+      // who referred the subscription
+      type: String,
     },
   },
   {

@@ -1,18 +1,14 @@
-var express = require("express");
-var app = express();
-var bodyParser = require("body-parser");
-var mongoose = require("mongoose");
-var port = 8080;
-var db = "mongodb://localhost:27017/reunion";
+let express = require("express");
+let app = express();
+let bodyParser = require("body-parser");
+let port = 8080;
+let users = require("./routes/v1/user");
+let plan = require("./routes/v1/plan");
+let product = require("./routes/v1/product");
+let subscription = require("./routes/v1/subscription");
 
-var users = require("./routes/user");
-var product = require("./routes/product");
-var plan = require("./routes/plan");
-var subscription = require("./routes/subscription");
-
-mongoose
-  .connect(db, { useUnifiedTopology: true, useNewUrlParser: true })
-  .then((res) => console.log("Connected to DB"));
+const connectToMongo = require("./db");
+connectToMongo();
 
 app.use(bodyParser.json());
 app.use(

@@ -1,10 +1,18 @@
-var mongoose = require("mongoose");
-var Schema = mongoose.Schema;
+let mongoose = require("mongoose");
+let Schema = mongoose.Schema;
 
-var PlanSchema = new Schema(
+let PlanSchema = new Schema(
   {
     plan_name: {
       //store the plan name
+      type: String,
+      require: true,
+    },
+    plan_duration: {
+      type: Number,
+      require: true,
+    },
+    product_id: {
       type: String,
       require: true,
     },
@@ -16,7 +24,7 @@ var PlanSchema = new Schema(
     discount: {
       //store the discount on the given plan
       type: Number,
-      require: true,
+      deafult: 0,
     },
     is_active: {
       //wether the plan is still active or not
@@ -26,15 +34,19 @@ var PlanSchema = new Schema(
     bool_free_trial: {
       //wethere the free trial plan is still active
       type: Boolean,
+      deafult: false,
     },
     free_trial_period: {
+      // no of free trial days
       type: Number,
-      require: true,
     },
     grace_period: {
-      // no of days after the free trial as expired,
+      // free trials days remaining after the trial period is over
       type: Number,
-      require: true,
+    },
+    money_back_duration: {
+      // money refund back duration
+      type: Number,
     },
     allowed_limits: {
       max_queries: {
@@ -42,7 +54,7 @@ var PlanSchema = new Schema(
         type: Number,
         require: true,
       },
-      max_result: {
+      max_results: {
         //max result the user can get
         type: Number,
         require: true,
